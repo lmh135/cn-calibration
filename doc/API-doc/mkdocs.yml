@@ -1,0 +1,32 @@
+site_name: Calibration
+
+theme:
+  name: 'material'
+
+# theme: readthedocs
+
+markdown_extensions:
+    - codehilite
+    - admonition
+    - pymdownx.superfences
+
+extra_css: [css/extra.css]
+
+nav:
+- Home: 'index.md'
+- OO Design: 'oo_design.md'
+- Python API:
+  - Introduction: './Python_API/python_index.md'
+#  - CalibrationManager: './Python_API/CalibrationManager.md'
+#  - Sensor: './Python_API/sensor.md'
+#  - Camera: './Python_API/camera.md'
+#  - LiDAR: './Python_API/lidar.md'
+#  - IMU: './Python_API/imu.md'
+- C++ API:
+  - Introduction: './C++_API/c++_index.md'
+#  - CalibrationManager: './C++_API/CalibrationManager.md'
+#  - Sensor: './C++_API/sensor.md'
+#  - Camera: './C++_API/camera.md'
+#  - LiDAR: './C++_API/lidar.md'
+#  - IMU: './C++_API/imu.md'
+

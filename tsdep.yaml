@@ -1,0 +1,2 @@
+- apt: libeigen3-dev
+- brewery: yaml-cpp@0.6.2

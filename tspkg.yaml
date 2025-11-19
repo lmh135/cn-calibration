@@ -1,0 +1,64 @@
+name: calibration_manager
+format_version: 2
+version: __from_changelog__
+maintainer: Henan Zhou <henan.zhou@tusimple.ai>
+
+deps:
+  yaml-cpp: any
+  octopus_api: ">=1.0.11"
+  dataset2: any
+  eigen: ">=3.4.0"
+
+build_deps:
+  pybind11: any
+
+extra_deps:
+  pip3: mkdocs mkdocs-material numpy pyyaml
+
+definitions:
+  - flavor:
+      os: ubuntu-xenial
+    deps:
+      cmake: '>=3.13.0'
+      eigen: any
+
+  - flavor:
+      os: ubuntu-focal
+    # extra_deps:
+    #   apt: libeigen3-dev
+
+
+build: |
+  if tsp show --path zoro > /dev/null 2>&1; then
+    echo "Zoro installed, build Zoro implementation by default!"
+    USE_ZORO=ON
+  fi
+  [[ -n $CLEANUP ]] && rm -r build
+  if tsp show --path zoro > /dev/null 2>&1; then
+    echo "Zoro installed, build Zoro implementation by default!"
+    USE_ZORO=ON
+  fi
+  mkdir -p build
+  pushd build
+    cmake \
+    -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR \
+    -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE \
+    -DPYTHON_EXECUTABLE=/usr/bin/python${TSPKG_FLAVOR_PY} \
+    -DPYBIND11_PYTHON_VERSION=${TSPKG_FLAVOR_PY} \
+    -DDEBUG=OFF ..
+    make -j4
+    make install
+  popd
+
+  # install python & data
+  install_python ${TSPKG_FLAVOR_PY} build/pybind/py_calibration_manager.cpython-*-linux-gnu.so
+  install_python ${TSPKG_FLAVOR_PY} calibration_manager
+  compile_python
+  index_zoro_pkg
+
+  # if [[ $TSPKG_BUILD_TYPE == release ]]; then
+  #   pushd doc/API-doc
+  #     python3 -m mkdocs build
+  #     install site doc
+  #   popd
+  # fi
